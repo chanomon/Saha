@@ -28,11 +28,16 @@ T16 = {'T': 19000.0, 'rho': 1.16964e+17, 'H': 6.65552e+16, 'HI': 2.28634e+16, 'H
 T17 = {'T': 20000.0, 'rho': 1.12316e+17, 'H': 6.34926e+16, 'HI': 2.11043e+16, 'HII': 4.23883e+16, 'HeI': 6263420000000000.0, 'HeII': 85845400000000.0, 'HeIII': 8942.71, 'ne': 4.24741e+16, 'b1': 1.06182}
 T18 = {'T': 21000.0, 'rho': 1.07778e+17, 'H': 6.06439e+16, 'HI': 1.96885e+16, 'HII': 4.09553e+16, 'HeI': 5949980000000000.0, 'HeII': 114407000000000.0, 'HeIII': 38123.9, 'ne': 4.10697e+16, 'b1': 1.07935}
 
+
 T_dicts = [T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]
 TT = [t['T'] for t in T_dicts]
 ne = [t['ne'] for t in T_dicts]
 nH = [t['H'] for t in T_dicts]
 nHe= [t['HeI']+t['HeII']+t['HeII'] for t in T_dicts]
+
+TT = [t['T'] for t in [T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]]
+ne = [t['ne'] for t in [T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]]
+
 T1hi = T1['HI']/T1['H']
 T2hi = T2['HI']/T2['H']
 T3hi = T3['HI']/T3['H']
@@ -145,9 +150,20 @@ N = 1e16
 epsilon = 1e13
 
 temperatures =  np.arange(4000,22000,1000)
+
 for T in temperatures:
     print("calculating",T)
     hI, hII, heI, heII, heIII,ne = sahaH(T,nH,nHe,ne,epsilon)# sahaH(T,H,He,n_e,epsilon):
+
+H_tot = [T['H'] for T in [T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]]
+He_tot= [T['HeI']+T['HeII']+T['HeIII'] for T in [T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]]
+Ne = [T['ne'] for T in [T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]]
+
+
+for T,H,He,ne in zip(temperatures,H_tot,He_tot,Ne):
+    print("calculating Saha for T ",T)
+    hI, hII, heI, heII, heIII,ne = sahaH(T,H, He,ne, epsilon)
+
     HI.append(hI)
     HII.append(hII)
     HeI.append(heI)
